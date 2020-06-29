@@ -1,0 +1,545 @@
+ACCESS-1-2-3
+
+Switch#show run
+Building configuration...
+
+Current configuration : 950 bytes
+!
+! Last configuration change at 16:01:03 EET Tue Mar 19 2019
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname Switch
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+clock timezone EET 2 0
+!
+!
+!
+!         
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!         
+!
+!
+interface Ethernet0/0
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/2
+!
+interface Ethernet0/3
+!
+interface Ethernet1/0
+!
+interface Ethernet1/1
+!
+interface Ethernet1/2
+!
+interface Ethernet1/3
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+!
+!
+end
+
+CORE-2
+
+Core-2#show run
+Building configuration...
+
+Current configuration : 2221 bytes
+!
+! Last configuration change at 15:55:03 EET Tue Mar 19 2019
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname Core-2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+clock timezone EET 2 0
+!
+!
+!
+!         
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!         
+!
+!
+!
+!
+interface Port-channel1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/0
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/2
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/3
+ no switchport
+ ip address 192.168.99.5 255.255.255.252
+ duplex auto
+!
+interface Ethernet1/0
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode on
+!
+interface Ethernet1/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode on
+!
+interface Ethernet1/2
+ no switchport
+ no ip address
+ shutdown
+ duplex auto
+!
+interface Ethernet1/3
+ no switchport
+ no ip address
+ shutdown
+ duplex auto
+!
+interface Ethernet2/0
+!
+interface Ethernet2/1
+!
+interface Ethernet2/2
+!
+interface Ethernet2/3
+!
+interface Vlan2
+ ip address 192.168.2.2 255.255.255.0
+ standby 2 ip 192.168.2.254
+ standby 2 priority 200
+ standby 2 preempt
+!
+interface Vlan3
+ ip address 192.168.3.2 255.255.255.0
+ standby 3 ip 192.168.3.254
+ standby 3 priority 200
+ standby 3 preempt
+!
+interface Vlan4
+ ip address 192.168.4.2 255.255.255.0
+ standby 4 ip 192.168.4.254
+ standby 4 priority 200
+ standby 4 preempt
+!
+interface Vlan5
+ ip address 192.168.5.2 255.255.255.0
+ standby 5 ip 192.168.5.254
+ standby 5 priority 200
+ standby 5 preempt
+!
+interface Vlan6
+ ip address 192.168.6.2 255.255.255.0
+ standby 6 priority 200
+ standby 6 preempt
+!
+router ospf 1
+ network 0.0.0.0 255.255.255.255 area 0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+!
+!
+end
+
+
+CORE-1
+
+Router-WAN
+
+Router#show run
+Building configuration...
+
+Current configuration : 1562 bytes
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Router
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+clock timezone EET 2 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!         
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!         
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ ip address 192.168.99.2 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface Ethernet0/1
+ ip address 192.168.99.6 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+!
+interface Ethernet0/2
+ ip address 192.168.10.1 255.255.255.0
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+interface Serial1/0
+ ip address 129.0.0.1 255.255.255.0
+ ip nat outside
+ ip virtual-reassembly in
+ serial restart-delay 0
+!
+interface Serial1/1
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial1/2
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial1/3
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+router ospf 1
+ network 192.168.99.0 0.0.0.3 area 0
+ network 192.168.99.4 0.0.0.3 area 0
+ default-information originate
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip nat inside source list 1 interface Serial1/0 overload
+ip nat inside source static 192.168.10.10 129.0.0.10
+!
+!         
+!
+access-list 1 permit any
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+!
+end
+
+CORE-1
+
+Core-1#show ru
+*Mar 19 14:05:12.881: %HSRP-5-STATECHANGE: Vlan3 Grp 3 state Speak -> Standby
+*Mar 19 14:05:13.339: %HSRP-5-STATECHANGE: Vlan2 Grp 2 state Speak -> Standby
+Core-1#show run
+Building configuration...
+
+Current configuration : 1938 bytes
+!
+! Last configuration change at 16:04:08 EET Tue Mar 19 2019
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname Core-1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+clock timezone EET 2 0
+!
+!
+!
+!         
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!         
+!
+!
+!
+!
+interface Port-channel1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/0
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/2
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/3
+!
+interface Ethernet1/0
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode on
+!
+interface Ethernet1/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode on
+!
+interface Ethernet1/2
+ no switchport
+ ip address 192.168.99.1 255.255.255.252
+ duplex auto
+!
+interface Ethernet1/3
+ shutdown
+!
+interface Ethernet2/0
+!
+interface Ethernet2/1
+!
+interface Ethernet2/2
+!         
+interface Ethernet2/3
+!
+interface Vlan2
+ ip address 192.168.2.1 255.255.255.0
+ standby 2 ip 192.168.2.254
+!
+interface Vlan3
+ ip address 192.168.3.1 255.255.255.0
+ standby 3 ip 192.168.3.254
+!
+interface Vlan4
+ ip address 192.168.4.1 255.255.255.0
+ standby 4 ip 192.168.4.254
+!
+interface Vlan5
+ ip address 192.168.5.1 255.255.255.0
+ standby 5 ip 192.168.5.254
+!
+interface Vlan6
+ ip address 192.168.6.1 255.255.255.0
+ standby 6 ip 192.168.6.254
+!
+router ospf 1
+ network 0.0.0.0 255.255.255.255 area 0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+!
+!
+end 
